@@ -1,7 +1,7 @@
-The Tag API Infrastructure
+The Shoppa API Infrastructure
 ======
 
-This is the repository for the Crowd Sourcing Platform Tag.
+This is the repository for the Shoppa Smart Marketing Platform.
 
 
 
