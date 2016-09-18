@@ -1,5 +1,5 @@
 {
-  "name": "Kehinde Kolade",
+  "name": "kolexinfos",
   "main": "./bin/wwww",
   "scripts": {
     "start": "node ./bin/www",
