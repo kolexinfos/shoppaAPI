@@ -1,4 +1,4 @@
 module.exports = {
   'secret': 'longobnoxiouspassphrase',
-  'database': 'mongodb://tag:tagon@ds044699.mlab.com:44699/tag'
+  'database': 'mongodb://shoppa:Funnys5140@ds033086.mlab.com:33086/shoppa'
 };

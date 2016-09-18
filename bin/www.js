@@ -5,7 +5,7 @@
  */
 
 var app = require('../server');
-var debug = require('debug')('com.tag.api:server');
+var debug = require('debug')('com.shoppa.api:server');
 var http = require('http');
 
 /**
