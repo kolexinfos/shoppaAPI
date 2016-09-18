@@ -7,7 +7,7 @@ const config = require('../../config/main');
 
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/test', function(req, res, next) {
     var password = 'Funnys5140';
     var hash = hasher.CheckPassword(password,"$P$Dum0FQSFevBGocOlp/l75QhdQkv21e0");
   res.json( hash );
@@ -15,12 +15,14 @@ router.get('/', function(req, res, next) {
 
 router.post('/register', function(req, res) {
   console.log(req.body);
-  if(!req.body.email || !req.body.password) {
-    res.status(400).json({ success: false, message: 'Please enter email and password.' });
+  if(!req.body.email || !req.body.password || !req.body.username || !req.body.phone) {
+    res.status(400).json({ success: false, message: 'Please make sure you enter email, phone, username and password.' });
   } else {
     const newUser = new User({
       email: req.body.email,
-      password: req.body.password
+      password: req.body.password,
+      phone: req.body.phone,
+      username:req.body.username
     });
 
     // Attempt to save the user
