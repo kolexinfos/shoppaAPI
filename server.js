@@ -36,7 +36,7 @@ app.use(morgan('dev'));
 
 // Home route. We'll end up changing this to our main front end index later.
 app.get('/', function(req, res) {
-  res.send('Relax. We will put the home page here later.');
+  res.json('Relax. We will put the home page here later.');
 });
 
 // Connect to database
