@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
+var Verify = require('../models/verify');
 var hasher = require('wordpress-hash-node');
 const jwt = require('jsonwebtoken');
 const config = require('../../config/main');
@@ -8,7 +9,7 @@ const config = require('../../config/main');
 
 /* GET users listing. */
 router.get('/test', function(req, res, next) {
-    var password = 'Funnys5140';
+    var password = re.body.password || '';
     var hash = hasher.CheckPassword(password,"$P$Dum0FQSFevBGocOlp/l75QhdQkv21e0");
   res.json( hash );
 });
@@ -27,10 +28,16 @@ router.post('/register', function(req, res) {
 
     // Attempt to save the user
     newUser.save(function(err) {
+
       if (err) {
         return res.status(400).json({ success: false, message: 'That email address already exists.'});
       }
+
+      //Send email to user with code and save to DB
+      ValidateUser(newUser);
+
       res.status(201).json({ success: true, message: 'Successfully created new user.' });
+
     });
   }
 });
@@ -60,6 +67,24 @@ router.post('/authenticate', function(req, res) {
     }
   });
 });
+
+function ValidateUser(user){
+  var token = Math.floor(Math.random() * 90000) + 10000
+  var email = user.email;
+
+  const verify = new Verify({
+    email: email,
+    token: token
+  });
+
+  verify.save(function(err){
+    if(err){
+      return res.status(400).json({ success: false, message: 'Could not save token'});
+    }
+
+
+  })
+}
 
 
 module.exports = router;
