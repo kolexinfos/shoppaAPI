@@ -117,7 +117,7 @@ function ValidateUser(user){
       console.log(error);
     }else{
       console.log('Email Sent to ' + user.emails);
-      res.status(201).json({ success: true, message: 'Successfully created new user.' });
+
     }
   });
 
