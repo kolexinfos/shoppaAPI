@@ -5,6 +5,7 @@ var Verify = require('../models/verify');
 var hasher = require('wordpress-hash-node');
 const jwt = require('jsonwebtoken');
 const config = require('../../config/main');
+var nodemailer = require('nodemailer');
 
 
 /* GET users listing. */
@@ -26,6 +27,7 @@ router.post('/register', function(req, res) {
       username:req.body.username
     });
 
+    console.log('Saving user ' + user.email + ' ' + user.username);
     // Attempt to save the user
     newUser.save(function(err) {
 
@@ -69,6 +71,8 @@ router.post('/authenticate', function(req, res) {
 });
 
 function ValidateUser(user){
+  console.log('Setting up user validation for' + user.email);
+
   var token = Math.floor(Math.random() * 90000) + 10000
   var email = user.email;
 
@@ -81,9 +85,36 @@ function ValidateUser(user){
     if(err){
       return res.status(400).json({ success: false, message: 'Could not save token'});
     }
+    console.log('User token was saved for' + user.email);
+  });
+
+  var name = user.username;
+  var from = 'admin@shoppa.com';
+  var message = 'Please find below the 5 digit token' + token;
+  var to = user.email;
+  var smtpTransport = nodemailer.createTransport("SMTP",{
+    service: "Gmail",
+    auth: {
+      user: "kolexinfos@gmail.com",
+      pass: "B!zTalk2890"
+    }
+  });
+  var mailOptions = {
+    from: from,
+    to: to,
+    subject: name+' | Email Confirmation Token !',
+    text: message
+  }
+  smtpTransport.sendMail(mailOptions, function(error, response){
+    if(error){
+      console.log(error);
+    }else{
+      console.log('Email Sent to ' + user.emails);
+      res.status(201).json({ success: true, message: 'Successfully created new user.' });
+    }
+  });
 
 
-  })
 }
 
 
