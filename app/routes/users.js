@@ -19,6 +19,7 @@ router.post('/register', function(req, res) {
   console.log(req.body);
   if(!req.body.email || !req.body.password || !req.body.username || !req.body.phone) {
     res.status(400).json({ success: false, message: 'Please make sure you enter email, phone, username and password.' });
+    console.log('Missing Parameter');
   } else {
     const newUser = new User({
       email: req.body.email,
@@ -27,7 +28,7 @@ router.post('/register', function(req, res) {
       username:req.body.username
     });
 
-    console.log('Saving user ' + user.email + ' ' + user.username);
+    console.log('Saving user ' + req.body.email + ' ' + req.body.username);
     // Attempt to save the user
     newUser.save(function(err) {
 
@@ -85,20 +86,26 @@ function ValidateUser(user){
     if(err){
       return res.status(400).json({ success: false, message: 'Could not save token'});
     }
-    console.log('User token was saved for' + user.email);
+    console.log('User token was saved for ' + user.email);
   });
 
   var name = user.username;
   var from = 'admin@shoppa.com';
   var message = 'Please find below the 5 digit token' + token;
   var to = user.email;
-  var smtpTransport = nodemailer.createTransport("SMTP",{
+
+  var smtpTransport = nodemailer.createTransport("SMTP", {
     service: "Gmail",
     auth: {
-      user: "kolexinfos@gmail.com",
-      pass: "B!zTalk2890"
+      XOAuth2: {
+        user: "kolexinfos@gmail.com",
+        clientId: "126468130105-ss5kpd1ji8sarpon5bh0m38fvpssup1d.apps.googleusercontent.com",
+        clientSecret: "-f1wpkIIcz2X5BPA0eAUGqfe",
+        refreshToken: "1/Xs5m3FTZQoPB23jgOG8MFbtFlF_Q3uw6uVXEPEj3yf0"
+      }
     }
   });
+
   var mailOptions = {
     from: from,
     to: to,
