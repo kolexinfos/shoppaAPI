@@ -6,6 +6,7 @@ var hasher = require('wordpress-hash-node');
 const jwt = require('jsonwebtoken');
 const config = require('../../config/main');
 var nodemailer = require('nodemailer');
+var moment = require('moment');
 
 
 /* GET users listing. */
@@ -13,6 +14,21 @@ router.get('/test', function(req, res, next) {
     var password = re.body.password || '';
     var hash = hasher.CheckPassword(password,"$P$Dum0FQSFevBGocOlp/l75QhdQkv21e0");
   res.json( hash );
+});
+
+router.post('/verifyEmail', function(req, res, next) {
+  console.log(req.body);
+  var now = moment().format('MMMM Do YYYY, h:mm:ss a');
+
+  if(!req.body.email || !req.body.code ){
+    res.status(400).json({ success: false, message: 'Please make sure you sent email and code.' });
+  }
+  else{
+    //Verify.findOne
+    res.status(200).json({success: true, result: now});
+  }
+
+
 });
 
 router.post('/register', function(req, res) {
@@ -109,14 +125,14 @@ function ValidateUser(user){
   var mailOptions = {
     from: from,
     to: to,
-    subject: name+' | Email Confirmation Token !',
+    subject: name+' | Email Validation Token !',
     text: message
   }
   smtpTransport.sendMail(mailOptions, function(error, response){
     if(error){
       console.log(error);
     }else{
-      console.log('Email Sent to ' + user.emails);
+      console.log('Email Sent to ' + user.email);
 
     }
   });
