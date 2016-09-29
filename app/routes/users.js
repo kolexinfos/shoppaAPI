@@ -18,14 +18,28 @@ router.get('/test', function(req, res, next) {
 
 router.post('/verifyEmail', function(req, res, next) {
   console.log(req.body);
-  var now = moment().format('MMMM Do YYYY, h:mm:ss a');
+
+  var cutoff = new Date();
+  cutoff.setDate(cutoff.getDate());
+  cutoff.setHours(cutoff.getHours - 1);
 
   if(!req.body.email || !req.body.code ){
     res.status(400).json({ success: false, message: 'Please make sure you sent email and code.' });
   }
   else{
-    //Verify.findOne
-    res.status(200).json({success: true, result: now});
+    Verify.find({email: req.body.email,token:req.body.token, createdAt: {$lt: cutoff}}, function(err, result)
+    {
+      if (err) throw err;
+
+      if (!result) {
+        res.status(401).json({success: false, message: 'Token not found'});
+      }
+      else {
+        res.status(200).json({success: true, message: 'A valid Token was found for user'});
+      }
+    }
+  );
+
   }
 
 
