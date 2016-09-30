@@ -11,7 +11,7 @@ var moment = require('moment');
 
 /* GET users listing. */
 router.get('/test', function(req, res, next) {
-    var password = re.body.password || '';
+    var password = req.body.password || '';
     var hash = hasher.CheckPassword(password,"$P$Dum0FQSFevBGocOlp/l75QhdQkv21e0");
   res.json( hash );
 });

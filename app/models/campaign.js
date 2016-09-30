@@ -26,10 +26,10 @@ const CampaignSchema = new mongoose.Schema({
             required:true
         },
         likes: {
-            type:Integer
+            type:Number
         },
         image:{
-            type: BinData
+            type: String
         }
     },
 {
