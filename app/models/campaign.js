@@ -30,6 +30,16 @@ const CampaignSchema = new mongoose.Schema({
         },
         image:{
             type: String
+        },
+        tag:{
+            type: [String],
+            required:true
+        },
+        comments:{
+            title:String,
+            body:String,
+            date: Date,
+            userid: String
         }
     },
 {
