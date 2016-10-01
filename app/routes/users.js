@@ -19,23 +19,34 @@ router.get('/test', function(req, res, next) {
 router.post('/verifyEmail', function(req, res, next) {
   console.log(req.body);
 
-  var cutoff = new Date();
-  cutoff.setDate(cutoff.getDate());
-  cutoff.setHours(cutoff.getHours - 1);
-
+  
   if(!req.body.email || !req.body.code ){
     res.status(400).json({ success: false, message: 'Please make sure you sent email and code.' });
   }
   else{
-    Verify.find({email: req.body.email,token:req.body.token, createdAt: {$lt: cutoff}}, function(err, result)
+    Verify.findOne({email: req.body.email,token:req.body.code}, function(err, result)
     {
       if (err) throw err;
 
       if (!result) {
+        console.log(result);
         res.status(401).json({success: false, message: 'Token not found'});
       }
       else {
-        res.status(200).json({success: true, message: 'A valid Token was found for user'});
+        console.log(result.createdAt);
+        
+        var initDate = moment(result.createdAt).format('MMMM Do YYYY, h:mm:ss a');
+        var now = moment.utc().format('ddd MMM DD YYYY HH:mm:ss z');
+        
+        console.log(initDate);
+        console.log(now);
+        
+        //var duration = moment.duration(now.diff(initDate));
+        //var hours = duration.asHours();
+        
+        //console.log(hours);
+       
+        res.status(200).json({success: true,result: result,message: 'A valid Token was found for user'});
       }
     }
   );
