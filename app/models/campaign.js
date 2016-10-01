@@ -40,6 +40,9 @@ const CampaignSchema = new mongoose.Schema({
             body:String,
             date: Date,
             userid: String
+        },
+        wantin:{
+            type:[String]
         }
     },
 {
