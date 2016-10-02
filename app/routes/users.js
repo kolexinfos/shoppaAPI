@@ -35,18 +35,22 @@ router.post('/verifyEmail', function(req, res, next) {
       else {
         console.log(result.createdAt);
         
-        var initDate = moment(result.createdAt).format('MMMM Do YYYY, h:mm:ss a');
-        var now = moment.utc().format('ddd MMM DD YYYY HH:mm:ss z');
-        
+        var initDate = moment(result.createdAt);
+        var now = moment({});
+
         console.log(initDate);
         console.log(now);
         
-        //var duration = moment.duration(now.diff(initDate));
-        //var hours = duration.asHours();
+        var duration = moment.duration(now.diff(initDate));
+        var hours = duration.asHours();
         
-        //console.log(hours);
-       
-        res.status(200).json({success: true,result: result,message: 'A valid Token was found for user'});
+        console.log(hours);
+        if(hours < 1) {
+          res.status(200).json({success: true, result: result, message: 'A valid Token was found for user'});
+        }
+        else{
+          res.status(401).json({success: false, result: result, message: 'The token has expired'});
+        }
       }
     }
   );
