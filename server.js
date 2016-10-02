@@ -46,7 +46,8 @@ mongoose.connect(config.database);
 
 //app.use('/api', requireAuth,home)(app);
 app.use('/users', users);
-app.use('/campaigns',requireAuth, campaigns);
+//app.use('/campaigns',requireAuth, campaigns);
+app.use('/campaigns', campaigns);
 app.use('/company', requireAuth, company);
 
 // Start the server

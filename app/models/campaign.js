@@ -31,15 +31,9 @@ const CampaignSchema = new mongoose.Schema({
         image:{
             type: String
         },
-        tag:{
+        tags:{
             type: [String],
             required:true
-        },
-        comments:{
-            title:String,
-            body:String,
-            date: Date,
-            userid: String
         },
         wantin:{
             type:[String]

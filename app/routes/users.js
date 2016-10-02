@@ -136,7 +136,7 @@ function ValidateUser(user){
 
   var name = user.username;
   var from = 'admin@shoppa.com';
-  var message = 'Please find below the 5 digit token' + token;
+  var message = 'Please find below the 5 digit token ' + token;
   var to = user.email;
 
   var smtpTransport = nodemailer.createTransport("SMTP", {
