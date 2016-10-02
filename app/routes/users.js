@@ -21,6 +21,7 @@ router.post('/verifyEmail', function(req, res, next) {
 
   
   if(!req.body.email || !req.body.code ){
+    console.log(req.body);
     res.status(400).json({ success: false, message: 'Please make sure you sent email and code.' });
   }
   else{
