@@ -18,7 +18,6 @@ router.get('/test', function(req, res, next) {
 
 router.post('/verifyEmail', function(req, res, next) {
   console.log(req.body);
-
   
   if(!req.body.email || !req.body.code ){
     console.log(req.body);
@@ -47,7 +46,7 @@ router.post('/verifyEmail', function(req, res, next) {
         
         console.log(hours);
         if(hours < 1) {
-          res.status(200).json({success: true, result: result, message: 'A valid Token was found for user'});
+          res.status(201).json({success: true, result: result, message: 'A valid Token was found for user'});
         }
         else{
           res.status(401).json({success: false, result: result, message: 'The token has expired'});
