@@ -47,16 +47,23 @@ router.post('/', function (req, res) {
 
 });
 
-router.post('/createCampaign', function (req, res) {
+router.get('/', function (req, res) {
+    console.log(req);
 
-    res.sendStatus(200);
+    Campaign.find({}, function(err,result){
+        res.status(201).json({ success: true,result:result, message: 'Successfully created Campaign ' + req.body.name });
+    })
 
 });
 
+
 //Get the top trending campaigns on Shoppa
 router.get('/getTopCampaigns', function (req, res) {
+    console.log(req);
 
-    res.sendStatus(200);
+    Campaign.find({likes: { $gte: 10 }}, function(err,result){
+        res.status(201).json({ success: true,result:result, message: 'Successfully created Campaign ' + req.body.name });
+    })
 
 });
 
