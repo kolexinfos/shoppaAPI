@@ -31,12 +31,18 @@ const CampaignSchema = new mongoose.Schema({
         image:{
             type: String
         },
+        thumbnail:{
+            type:String
+        },
         tags:{
             type: [String],
             required:true
         },
         wantin:{
             type:[String]
+        },
+        share:{
+            type:Number
         }
     },
 {
