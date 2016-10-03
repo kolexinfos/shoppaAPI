@@ -4,8 +4,18 @@ var Campaign = require('../models/campaign');
 
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-    res.json("Default route for campaigns");
+router.get('/', function (req, res) {
+    console.log(req);
+
+    Campaign.find({}, function(err,result){
+        if(err)
+        {
+            console.log(err);
+            return res.status(400).json({ success: false, message: 'An error occurred on trying to pull the campaigns ' + err});
+        }
+
+        res.status(201).json({ success: true,result:result, message: 'Successfully pulled the Campaigns ' });
+    })
 
 });
 
@@ -15,7 +25,7 @@ router.post('/', function (req, res) {
     if(!req.body.name || !req.body.type || !req.body.description || !req.body.enabled || !req.body.expiring || !req.body.likes
         || !req.body.image || !req.body.tags || !req.body.wantin)
     {
-        res.status(400).json({ success: false, message: 'Please make sure you pass all the reuired parameter for this endpoint.' });
+        res.status(400).json({ success: false, message: 'Please make sure you pass all the required parameter for this endpoint.' });
         console.log('Missing Parameter');
     }
     else
@@ -47,21 +57,39 @@ router.post('/', function (req, res) {
 
 });
 
-router.get('/', function (req, res) {
+
+//Update Campaign details
+router.put('/', function(req, res){
     console.log(req);
 
-    Campaign.find({}, function(err,result){
-        res.status(201).json({ success: true,result:result, message: 'Successfully created Campaign ' + req.body.name });
+    if(!req.body.field || !req.body.value || !req.body.newValue){
+        res.status(400).json({ success: false, message: 'Please make sure you pass all the required parameter for this endpoint.' });
+        console.log('Missing Parameter');
+    }
+
+    var field = req.body.field;
+    var value = req.body.value;
+    Campaign.findOne({field :value }, function(err,result){
+        if(err)
+        {
+            console.log(err);
+            return res.status(400).json({ success: false, message: 'An error occurred on trying to pull the campaigns ' + err});
+        }
+
     })
-
 });
-
 
 //Get the top trending campaigns on Shoppa
 router.get('/getTopCampaigns', function (req, res) {
     console.log(req);
 
     Campaign.find({likes: { $gte: 10 }}, function(err,result){
+        if(err)
+        {
+            console.log(err);
+            return res.status(400).json({ success: false, message: 'An error occurred on trying to pull the campaigns ' + err});
+        }
+
         res.status(201).json({ success: true,result:result, message: 'Successfully created Campaign ' + req.body.name });
     })
 
@@ -69,7 +97,6 @@ router.get('/getTopCampaigns', function (req, res) {
 
 /*
 Get campaigns that users have opt in for on Shoppa
-
 */
 router.get('/getUserCampaigns', function (req, res) {
 
