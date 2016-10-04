@@ -101,7 +101,13 @@ Get campaigns that users have opt in for on Shoppa
 */
 router.get('/getUserCampaigns', function (req, res) {
 
-    res.sendStatus(200);
+     console.log(req);
+
+    if(!req.body.emai )
+    {
+        res.status(400).json({ success: false, message: 'Please make sure you pass all the required parameter for this endpoint.' });
+        console.log('Missing Parameter');
+    }
 
 });
 
