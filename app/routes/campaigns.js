@@ -103,11 +103,21 @@ router.get('/getUserCampaigns', function (req, res) {
 
      console.log(req);
 
-    if(!req.body.emai )
+    if(!req.body.email)
     {
         res.status(400).json({ success: false, message: 'Please make sure you pass all the required parameter for this endpoint.' });
         console.log('Missing Parameter');
     }
+    
+     Campaign.find({email:req.body.email}, function(err,result){
+        if(err)
+        {
+            console.log(err);
+            return res.status(400).json({ success: false, message: 'An error occurred on trying to pull the campaigns ' + err});
+        }
+
+        res.status(201).json({ success: true,result:result, message: 'Successfully pulled the Campaigns ' });
+    })
 
 });
 
