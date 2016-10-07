@@ -26,7 +26,7 @@ const CampaignSchema = new mongoose.Schema({
             required:true
         },
         likes: {
-            type:Number
+            type:[String]
         },
         image:{
             type: String

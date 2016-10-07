@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Campaign = require('../models/campaign');
+var Like = require('../models/like');
 
 
 /* GET home page. */
@@ -97,9 +98,35 @@ router.get('/getTopCampaigns', function (req, res) {
 });
 
 /*
-Get campaigns that users have opt in for on Shoppa
+Get campaigns that would displayed on user timeline
 */
 router.get('/getUserCampaigns', function (req, res) {
+
+     console.log(req);
+
+    if(!req.body.email)
+    {
+        res.status(400).json({ success: false, message: 'Please make sure you pass all the required parameter for this endpoint.' });
+        console.log('Missing Parameter');
+    }
+    
+    //Get all campaigns that user has not liked or opted in to
+     Campaign.find({email:req.body.email}, function(err,result){
+        if(err)
+        {
+            console.log(err);
+            return res.status(400).json({ success: false, message: 'An error occurred on trying to pull the campaigns ' + err});
+        }
+
+        res.status(201).json({ success: true,result:result, message: 'Successfully pulled the Campaigns ' });
+    })
+
+});
+
+/*
+Get Campaigns liked by User
+*/
+router.get('/getUserCampaignLikes', function (req, res) {
 
      console.log(req);
 
