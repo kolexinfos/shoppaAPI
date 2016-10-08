@@ -100,26 +100,45 @@ router.get('/getTopCampaigns', function (req, res) {
 /*
 Get campaigns that would displayed on user timeline
 */
-router.get('/getUserCampaigns', function (req, res) {
+router.post('/getUserCampaigns', function (req, res) {
 
-     console.log(req);
+    console.log(req);
+    var likes = [String];
+
 
     if(!req.body.email)
     {
         res.status(400).json({ success: false, message: 'Please make sure you pass all the required parameter for this endpoint.' });
         console.log('Missing Parameter');
     }
-    
-    //Get all campaigns that user has not liked or opted in to
-     Campaign.find({email:req.body.email}, function(err,result){
+
+    Like.find({}, function(err,result){
         if(err)
         {
-            console.log(err);
-            return res.status(400).json({ success: false, message: 'An error occurred on trying to pull the campaigns ' + err});
+            //console.log(err);
+            return res.status(400).json({success: false, message: 'An error occurred on trying to pull Likes ' + err})
         }
+        else {
+            for (var i = 0; i < result.length; i += 1) {
+                likes.push(result[i].campaignId);
+            }
 
-        res.status(201).json({ success: true,result:result, message: 'Successfully pulled the Campaigns ' });
-    })
+
+            //Get all campaigns that user has not liked or opted in to
+            Campaign.find({email: {$nin: likes}}, function (err, result) {
+                if (err) {
+                    console.log(err);
+                    return res.status(400).json({
+                        success: false,
+                        message: 'An error occurred on trying to pull the campaigns ' + err
+                    });
+                }
+
+                res.status(201).json({success: true, result: result, message: 'Successfully pulled the Campaigns '});
+            });
+        }
+        });
+
 
 });
 
