@@ -4,7 +4,7 @@ var Campaign = require('../models/campaign');
 var Like = require('../models/like');
 
 
-/* GET home page. */
+/* GET campaigns default get route page. */
 router.get('/', function (req, res) {
     console.log(req);
 

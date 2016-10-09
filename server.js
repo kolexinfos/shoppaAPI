@@ -24,6 +24,7 @@ require('./config/passport')(passport);
 var users = require('./app/routes/users');
 var campaigns = require('./app/routes/campaigns');
 var company = require('./app/routes/company');
+var likes = require('./app/routes/likes');
 
 
 // Use body-parser to get POST requests for API use
@@ -48,6 +49,7 @@ mongoose.connect(config.database);
 app.use('/users', users);
 //app.use('/campaigns',requireAuth, campaigns);
 app.use('/campaigns', campaigns);
+app.use('/likes', likes);
 app.use('/company', requireAuth, company);
 
 // Start the server
