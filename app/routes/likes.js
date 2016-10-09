@@ -34,7 +34,7 @@ router.post('/', function (req, res) {
     {
         const like = new Like({
             userEmail: req.body.email,
-            campaignId: req.body.campaignid
+            campaignId: req.body._id
         });
 
         console.log('Saving Campaign :  ' + req.body.name);
@@ -46,7 +46,7 @@ router.post('/', function (req, res) {
                 return res.status(400).json({ success: false, message: 'An error occurred on trying to save campaign, please try again later ' + err});
             }
 
-            res.status(201).json({ success: true, message: 'Successfully logged the like record for ' + req.body.email + ' for campaign ' + req.body.campaignid });
+            res.status(201).json({ success: true, message: 'Successfully logged the like record for ' + req.body.email + ' for campaign ' + req.body._id });
         })
     }
 
