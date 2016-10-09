@@ -25,7 +25,7 @@ router.post('/', function (req, res) {
     console.log(req);
 
 
-    if(!req.body.email || !req.body.campaignid)
+    if(!req.body.email || !req.body._id)
     {
         res.status(400).json({ success: false, message: 'Please make sure you pass all the required parameter for this endpoint.' });
         console.log('Missing Parameter');
