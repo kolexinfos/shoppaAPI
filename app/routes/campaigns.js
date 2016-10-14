@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var Campaign = require('../models/campaign');
-var Like = require('../models/like');
 
 
 /* GET campaigns default get route page. */
@@ -24,7 +23,7 @@ router.post('/', function (req, res) {
     console.log(req.body);
 
     if(!req.body.name || !req.body.type || !req.body.description || !req.body.enabled || !req.body.expiring
-        || !req.body.image || !req.body.tags || !req.body.wantin || !req.body.thumbnail)
+        || !req.body.image || !req.body.tags || !req.body.wantin )
     {
         res.status(400).json({ success: false, message: 'Please make sure you pass all the required parameter for this endpoint.' });
         console.log('Missing Parameter');
