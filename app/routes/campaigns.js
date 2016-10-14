@@ -23,7 +23,7 @@ router.get('/', function (req, res) {
 router.post('/', function (req, res) {
     console.log(req.body);
 
-    if(!req.body.name || !req.body.type || !req.body.description || !req.body.enabled || !req.body.expiring || !req.body.likes
+    if(!req.body.name || !req.body.type || !req.body.description || !req.body.enabled || !req.body.expiring
         || !req.body.image || !req.body.tags || !req.body.wantin || !req.body.thumbnail)
     {
         res.status(400).json({ success: false, message: 'Please make sure you pass all the required parameter for this endpoint.' });
@@ -37,7 +37,6 @@ router.post('/', function (req, res) {
             description: req.body.description,
             enabled : req.body.enabled,
             expiring : req.body.expiring,
-            likes : req.body.likes,
             image : req.body.image,
             thumbnail:req.body.thumbnail,
             tags : req.body.tags,

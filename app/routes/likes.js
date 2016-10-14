@@ -46,6 +46,17 @@ router.post('/', function (req, res) {
                 return res.status(400).json({ success: false, message: 'An error occurred on trying to save campaign, please try again later ' + err});
             }
 
+            Campaign.findOneAndUpdate({_id:req.body._id},{ $push: { "likes" : req.body.email } }, function(err, result){
+                if(err)
+                {
+                    console.log(err);
+                    return res.status(400).json({ success: false, message: 'An error occurred on trying to search for this campaign ' + err});
+                }
+                else
+                {
+
+                }
+            });
             res.status(201).json({ success: true, message: 'Successfully logged the like record for ' + req.body.email + ' for campaign ' + req.body._id });
         })
     }

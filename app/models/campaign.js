@@ -35,8 +35,7 @@ const CampaignSchema = new mongoose.Schema({
             type:String
         },
         tags:{
-            type: [String],
-            required:true
+            type: [String]
         },
         wantin:{
             type:[String]
