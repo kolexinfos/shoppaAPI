@@ -5,7 +5,6 @@ var Campaign = require('../models/campaign');
 
 /* GET campaigns default get route page. */
 router.get('/', function (req, res) {
-    console.log(req);
 
     Campaign.find({}, function(err,result){
         if(err)
@@ -58,9 +57,35 @@ router.post('/', function (req, res) {
 });
 
 
+/*
+ Like Campaign
+
+ */
+router.post('/likeCampaign', function(req,res){
+    console.log(req.body);
+
+    if(!req.body.email || !req.body.campaignid)
+    {
+        res.status(400).json({ success: false, message: 'Please make sure you pass all the required parameter for this endpoint.' });
+        console.log('Missing Parameter');
+    }
+
+    Campaign.findOneAndUpdate({_id:req.body.campaignid}, { $push: { likes: req.body.email } }, function(err,result){
+        if(err)
+        {
+            console.log(err);
+            return res.status(400).json({ success: false, message: 'An error occurred on trying to update campaign ' + err});
+        }
+
+        res.status(201).json({ success: true,result:result, message: 'Successfully added users to the list of user likes for this campaign ' });
+    })
+
+});
+
+
 //Update Campaign details
 router.put('/', function(req, res){
-    console.log(req);
+    console.log(req.body);
 
     if(!req.body.field || !req.body.value || !req.body.newValue){
         res.status(400).json({ success: false, message: 'Please make sure you pass all the required parameter for this endpoint.' });
@@ -90,7 +115,7 @@ router.get('/getTopCampaigns', function (req, res) {
             return res.status(400).json({ success: false, message: 'An error occurred on trying to pull the campaigns ' + err});
         }
 
-        res.status(201).json({ success: true,result:result, message: 'Successfully created Campaign ' + req.body.name });
+        res.status(200).json({ success: true,result:result, message: 'Successfully created Campaign ' + req.body.name });
     })
 
 });
@@ -100,9 +125,7 @@ Get campaigns that would displayed on user timeline
 */
 router.post('/getUserCampaigns', function (req, res) {
 
-    console.log(req);
-    var likes = [String];
-
+    console.log(req.body);
 
     if(!req.body.email)
     {
@@ -110,20 +133,8 @@ router.post('/getUserCampaigns', function (req, res) {
         console.log('Missing Parameter');
     }
 
-    Like.find({}, function(err,result){
-        if(err)
-        {
-            //console.log(err);
-            return res.status(400).json({success: false, message: 'An error occurred on trying to pull Likes ' + err})
-        }
-        else {
-            for (var i = 0; i < result.length; i += 1) {
-                likes.push(result[i].campaignId);
-            }
-
-
-            //Get all campaigns that user has not liked or opted in to
-            Campaign.find({email: {$nin: likes}}, function (err, result) {
+   //Get all campaigns that user has not liked or opted in to
+            Campaign.find({"likes" : { "$not": { "$all": [req.body.email] } }}, function (err, result) {
                 if (err) {
                     console.log(err);
                     return res.status(400).json({
@@ -132,20 +143,16 @@ router.post('/getUserCampaigns', function (req, res) {
                     });
                 }
 
-                res.status(201).json({success: true, result: result, message: 'Successfully pulled the Campaigns '});
+                res.status(200).json({success: true, result: result, message: 'Successfully pulled the Campaigns '});
             });
-        }
         });
-
-
-});
 
 /*
 Get Campaigns liked by User
 */
-router.get('/getUserCampaignLikes', function (req, res) {
+router.post('/userCampaignLikes', function (req, res) {
 
-     console.log(req);
+     console.log(req.body);
 
     if(!req.body.email)
     {
@@ -153,14 +160,14 @@ router.get('/getUserCampaignLikes', function (req, res) {
         console.log('Missing Parameter');
     }
     
-     Campaign.find({email:req.body.email}, function(err,result){
+     Campaign.find({"likes":{"$all": [req.body.email]}}, function(err,result){
         if(err)
         {
             console.log(err);
             return res.status(400).json({ success: false, message: 'An error occurred on trying to pull the campaigns ' + err});
         }
 
-        res.status(201).json({ success: true,result:result, message: 'Successfully pulled the Campaigns ' });
+        res.status(200).json({ success: true,result:result, message: 'Successfully pulled the Campaigns ' });
     })
 
 });
@@ -175,5 +182,7 @@ router.get('/getExpiringCampaigns', function (req, res) {
     res.sendStatus(200);
 
 });
+
+
 
 module.exports = router;
