@@ -26,7 +26,8 @@ const CampaignSchema = new mongoose.Schema({
             required:true
         },
         likes: {
-            type:[String]
+            type: Array,
+            default: []
         },
         image:{
             type: String
@@ -38,10 +39,12 @@ const CampaignSchema = new mongoose.Schema({
             type: [String]
         },
         wantin:{
-            type:[String]
+            type: Array,
+            default: []
         },
         share:{
-            type:Number
+            type:Array,
+            default: []
         }
     },
 {

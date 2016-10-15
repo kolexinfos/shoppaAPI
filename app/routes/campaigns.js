@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Campaign = require('../models/campaign');
+var moment = require('moment');
 
 
 /* GET campaigns default get route page. */
@@ -69,8 +70,8 @@ router.post('/likeCampaign', function(req,res){
         res.status(400).json({ success: false, message: 'Please make sure you pass all the required parameter for this endpoint.' });
         console.log('Missing Parameter');
     }
-
-    Campaign.findOneAndUpdate({_id:req.body.campaignid}, { $push: { likes: req.body.email } }, function(err,result){
+    console.log( moment.utc().format('YYYY-MM-DD HH:mm:ss'));
+    Campaign.findOneAndUpdate({_id:req.body.campaignid}, { $push: { likes : {"email" : req.body.email, "timestamp" : moment.utc().format('YYYY-MM-DD HH:mm:ss') } } }, function(err,result){
         if(err)
         {
             console.log(err);
@@ -78,6 +79,48 @@ router.post('/likeCampaign', function(req,res){
         }
 
         res.status(201).json({ success: true,result:result, message: 'Successfully added users to the list of user likes for this campaign ' });
+    })
+
+});
+
+router.post('/shareCampaign', function(req,res){
+    console.log(req.body);
+
+    if(!req.body.email || !req.body.campaignid)
+    {
+        res.status(400).json({ success: false, message: 'Please make sure you pass all the required parameter for this endpoint.' });
+        console.log('Missing Parameter');
+    }
+
+    Campaign.findOneAndUpdate({_id:req.body.campaignid}, { $push: { share : {"email" : req.body.email, "timestamp" : moment.utc().format('YYYY-MM-DD HH:mm:ss') } } }, function(err,result){
+        if(err)
+        {
+            console.log(err);
+            return res.status(400).json({ success: false, message: 'An error occurred on trying to update the share for this campaign ' + err});
+        }
+
+        res.status(201).json({ success: true,result:result, message: 'Successfully added users to the list of user share for this campaign ' });
+    })
+
+});
+
+router.post('/wantinCampaign', function(req,res){
+    console.log(req.body);
+
+    if(!req.body.email || !req.body.campaignid)
+    {
+        res.status(400).json({ success: false, message: 'Please make sure you pass all the required parameter for this endpoint.' });
+        console.log('Missing Parameter');
+    }
+
+    Campaign.findOneAndUpdate({_id:req.body.campaignid}, { $push: { wantin : {"email" : req.body.email, "timestamp" : moment.utc().format('YYYY-MM-DD HH:mm:ss') } } }, function(err,result){
+        if(err)
+        {
+            console.log(err);
+            return res.status(400).json({ success: false, message: 'An error occurred on trying to update the share for this campaign ' + err});
+        }
+
+        res.status(201).json({ success: true,result:result, message: 'Successfully added users to the list of wantin for this campaign ' });
     })
 
 });
