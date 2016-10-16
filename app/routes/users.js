@@ -115,7 +115,7 @@ router.post('/authenticate', function(req, res) {
     if (err) throw err;
 
     if (!user) {
-      res.status(401).json({ success: false, message: 'Authentication failed. User not found.' });
+      res.status(401).json({ success: false, message: 'Authentication failed. User not found or email not verified' });
     } else {
       // Check if password matches
       user.comparePassword(req.body.password, function(err, isMatch) {
