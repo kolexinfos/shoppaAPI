@@ -112,7 +112,10 @@ router.post('/authenticate', function(req, res) {
     email: req.body.email,
     verified:true
   }, function(err, user) {
-    if (err) throw err;
+
+    if (err) {
+      return res.status(400).json({ success: false, message: 'An error occurred' + err});
+    }
 
     if (!user) {
       res.status(401).json({ success: false, message: 'Authentication failed. User not found or email not verified' });
