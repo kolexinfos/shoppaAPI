@@ -46,7 +46,7 @@ router.post('/verifyEmail', function(req, res, next) {
         
         console.log(hours);
         if(hours < 1) {
-          User.findOneAndUpdate({email:req.body.email},{ $set: { isAdmin: true }}, function(err,user){
+          User.findOneAndUpdate({email:req.body.email},{ $set: { verified: true }}, function(err,user){
               if(err)
               {
                 return res.status(400).json({ success: false, message: 'An error occurred on trying to update the User verified field'});
