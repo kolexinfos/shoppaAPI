@@ -46,6 +46,16 @@ router.post('/verifyEmail', function(req, res, next) {
         
         console.log(hours);
         if(hours < 1) {
+          User.findOneAndUpdate({email:req.body.email},{ $set: { verified: true }}, function(err,user){
+              if(err)
+              {
+                return res.status(400).json({ success: false, message: 'An error occurred on trying to update the User verified field'});
+              }
+              else
+              {
+
+              }
+          });
           res.status(201).json({success: true, result: result, message: 'A valid Token was found for user'});
         }
         else{
@@ -92,13 +102,23 @@ router.post('/register', function(req, res) {
 
 // Authenticate the user and get a JSON Web Token to include in the header of future requests.
 router.post('/authenticate', function(req, res) {
+
+  if(!req.body.email || !req.body.password ){
+    console.log(req.body);
+    res.status(400).json({ success: false, message: 'Please make sure you sent email and password.' });
+  }
+
   User.findOne({
-    email: req.body.email
+    email: req.body.email,
+    verified:true
   }, function(err, user) {
-    if (err) throw err;
+
+    if (err) {
+      return res.status(400).json({ success: false, message: 'An error occurred' + err});
+    }
 
     if (!user) {
-      res.status(401).json({ success: false, message: 'Authentication failed. User not found.' });
+      res.status(401).json({ success: false, message: 'Authentication failed. User not found or email not verified' });
     } else {
       // Check if password matches
       user.comparePassword(req.body.password, function(err, isMatch) {
@@ -107,7 +127,7 @@ router.post('/authenticate', function(req, res) {
           const token = jwt.sign(user, config.secret, {
             expiresIn: 10080 // in seconds
           });
-          res.status(200).json({ success: true, token: 'JWT ' + token });
+          res.status(200).json({ success: true,message:'Authentication Successful.', token: 'JWT ' + token });
         } else {
           res.status(401).json({ success: false, message: 'Authentication failed. Passwords did not match.' });
         }

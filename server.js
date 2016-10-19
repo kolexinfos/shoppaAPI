@@ -28,6 +28,7 @@ var campaigns = require('./app/routes/campaigns');
 var company = require('./app/routes/company');
 
 
+
 // Use body-parser to get POST requests for API use
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -50,6 +51,7 @@ mongoose.connect(config.database);
 app.use('/users', users);
 //app.use('/campaigns',requireAuth, campaigns);
 app.use('/campaigns', campaigns);
+
 app.use('/company', requireAuth, company);
 
 // Start the server
