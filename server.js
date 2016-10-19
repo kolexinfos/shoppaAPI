@@ -13,6 +13,8 @@ const config = require('./config/main');
 const cors = require('cors');
 const port = 3000;
 
+app.use(cors());
+
 const requireAuth = passport.authenticate('jwt', { session: false });
 
 // Initialize passport for use
