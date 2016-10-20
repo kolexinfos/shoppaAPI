@@ -14,7 +14,9 @@ router.get('/', function (req, res) {
             return res.status(400).json({ success: false, message: 'An error occurred on trying to pull the campaigns ' + err});
         }
 
+        else{
         res.status(201).json({ success: true,result:result, message: 'Successfully pulled the Campaigns ' });
+        }
     })
 
 });
@@ -70,6 +72,7 @@ router.post('/likeCampaign', function(req,res){
         res.status(400).json({ success: false, message: 'Please make sure you pass all the required parameter for this endpoint.' });
         console.log('Missing Parameter');
     }
+    else{
     console.log( moment.utc().format('YYYY-MM-DD HH:mm:ss'));
     Campaign.findOneAndUpdate({_id:req.body.campaignid}, { $push: { likes : {"email" : req.body.email, "timestamp" : moment.utc().format('YYYY-MM-DD HH:mm:ss') } } }, function(err,result){
         if(err)
@@ -80,7 +83,7 @@ router.post('/likeCampaign', function(req,res){
 
         res.status(201).json({ success: true,result:result, message: 'Successfully added users to the list of user likes for this campaign ' });
     })
-
+    }
 });
 
 router.post('/shareCampaign', function(req,res){
@@ -91,6 +94,7 @@ router.post('/shareCampaign', function(req,res){
         res.status(400).json({ success: false, message: 'Please make sure you pass all the required parameter for this endpoint.' });
         console.log('Missing Parameter');
     }
+    else{
 
     Campaign.findOneAndUpdate({_id:req.body.campaignid}, { $push: { share : {"email" : req.body.email, "timestamp" : moment.utc().format('YYYY-MM-DD HH:mm:ss') } } }, function(err,result){
         if(err)
@@ -98,9 +102,11 @@ router.post('/shareCampaign', function(req,res){
             console.log(err);
             return res.status(400).json({ success: false, message: 'An error occurred on trying to update the share for this campaign ' + err});
         }
-
+        else{
         res.status(201).json({ success: true,result:result, message: 'Successfully added users to the list of user share for this campaign ' });
+        }
     })
+    }
 
 });
 
@@ -112,7 +118,7 @@ router.post('/wantinCampaign', function(req,res){
         res.status(400).json({ success: false, message: 'Please make sure you pass all the required parameter for this endpoint.' });
         console.log('Missing Parameter');
     }
-
+    else{
     Campaign.findOneAndUpdate({_id:req.body.campaignid}, { $push: { wantin : {"email" : req.body.email, "timestamp" : moment.utc().format('YYYY-MM-DD HH:mm:ss') } } }, function(err,result){
         if(err)
         {
@@ -122,6 +128,7 @@ router.post('/wantinCampaign', function(req,res){
 
         res.status(201).json({ success: true,result:result, message: 'Successfully added users to the list of wantin for this campaign ' });
     })
+    }
 
 });
 
@@ -157,8 +164,10 @@ router.get('/getTopCampaigns', function (req, res) {
             console.log(err);
             return res.status(400).json({ success: false, message: 'An error occurred on trying to pull the campaigns ' + err});
         }
+        else{
 
         res.status(200).json({ success: true,result:result, message: 'Successfully created Campaign ' + req.body.name });
+        }
     })
 
 });
@@ -175,7 +184,8 @@ router.post('/getUserCampaigns', function (req, res) {
         res.status(400).json({ success: false, message: 'Please make sure you pass all the required parameter for this endpoint.' });
         console.log('Missing Parameter');
     }
-
+    else
+    {
    //Get all campaigns that user has not liked or opted in to
             Campaign.find({"likes" : { "$not": { "$all": [req.body.email] } }}, function (err, result) {
                 if (err) {
@@ -188,6 +198,7 @@ router.post('/getUserCampaigns', function (req, res) {
 
                 res.status(200).json({success: true, result: result, message: 'Successfully pulled the Campaigns '});
             });
+        }
         });
 
 /*
