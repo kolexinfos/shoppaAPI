@@ -197,7 +197,7 @@ router.post('/getUserCampaigns', function (req, res) {
                 }
 
                 res.status(200).json({success: true, result: result, message: 'Successfully pulled the Campaigns '});
-            }).limit(3);
+            }).limit(20);
         }
         });
 
