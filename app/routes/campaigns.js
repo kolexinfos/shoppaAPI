@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var Campaign = require('../models/campaign');
 var moment = require('moment');
+var _ = require('lodash');
+
 
 
 /* GET campaigns default get route page. */
@@ -187,7 +189,7 @@ router.post('/getUserCampaigns', function (req, res) {
     else
     {
    //Get all campaigns that user has not liked or opted in to
-            Campaign.find({"likes" : { "$not": { "$all": [req.body.email] } }}, function (err, result) {
+            Campaign.find({}, function (err, result) {
                 if (err) {
                     console.log(err);
                     return res.status(400).json({
@@ -196,6 +198,9 @@ router.post('/getUserCampaigns', function (req, res) {
                     });
                 }
 
+                result = _.reject(result, {likes: [{email: req.body.email}] });
+
+                console.log(result.length);
                 res.status(200).json({success: true, result: result, message: 'Successfully pulled the Campaigns '});
             }).limit(20);
         }
