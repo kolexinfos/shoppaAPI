@@ -219,13 +219,13 @@ router.post('/userCampaignLikes', function (req, res) {
         console.log('Missing Parameter');
     }
     
-     Campaign.find({"likes":{"$all": [req.body.email]}}, function(err,result){
+     Campaign.find({}, function(err,result){
         if(err)
         {
             console.log(err);
             return res.status(400).json({ success: false, message: 'An error occurred on trying to pull the campaigns ' + err});
         }
-
+        result = _.filter(result, {likes: [{email: req.body.email}] });
         res.status(200).json({ success: true,result:result, message: 'Successfully pulled the Campaigns ' });
     })
 
