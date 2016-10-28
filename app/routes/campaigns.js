@@ -198,7 +198,11 @@ router.post('/getUserCampaigns', function (req, res) {
                     });
                 }
 
+                //Remove campaigns already liked by user
                 result = _.reject(result, {likes: [{email: req.body.email}] });
+
+                //Remove Campaigns already followed by user
+                result = _.reject(result, {wantin: [{email: req.body.email}] });
 
                 console.log(result.length);
                 res.status(200).json({success: true, result: result, message: 'Successfully pulled the Campaigns '});
