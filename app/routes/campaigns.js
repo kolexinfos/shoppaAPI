@@ -218,7 +218,7 @@ router.post('/userCampaignLikes', function (req, res) {
         res.status(400).json({ success: false, message: 'Please make sure you pass all the required parameter for this endpoint.' });
         console.log('Missing Parameter');
     }
-    
+    else{
      Campaign.find({}, function(err,result){
         if(err)
         {
@@ -228,20 +228,52 @@ router.post('/userCampaignLikes', function (req, res) {
         result = _.filter(result, {likes: [{email: req.body.email}] });
         res.status(200).json({ success: true,result:result, message: 'Successfully pulled the Campaigns ' });
     })
+    }
 
 });
 
 /*
-Get expiring campaigns by number of days
+Search campaigns with Quert Test
 
 */
 
-router.get('/getExpiringCampaigns', function (req, res) {
+router.post('/searchCampaigns', function (req, res) {
 
-    res.sendStatus(200);
+   console.log(req.body);
 
-});
-
+    if(!req.body.text || !req.body.email)
+    {
+        res.status(400).json({ success: false, message: 'Please make sure you pass all the required parameter for this endpoint.' });
+        console.log('Missing Parameter');
+    }
+    else{
+        
+        Campaign.find({$or : [
+                             {"name": {$regex: new RegExp(req.body.text,'i')}},
+                             {"description": {$regex: new RegExp(req.body.text,'i')}}
+                             ]}, 
+                             function(err,result){
+            
+                                    if(err)
+                                    {
+                                        console.log(err);
+                                        return res.status(400).json({ success: false, message: 'An error occurred on trying to search campaigns ' + err});
+                                    }
+                                    
+                                    // result = _.filter(result, function(item){
+                                    //     console.log(item.name.indexOf(req.body.text));
+                                    //     console.log(item.name);
+                                    //     return item.name.indexOf(req.body.text) != -1;
+                                    // });
+                                    
+                                     result = _.reject(result, {likes: [{email: req.body.email}] });
+            
+            res.status(200).json({ success: true,result:result, message: 'Successfully pulled the Campaigns ' });
+            
+        });
+            
+        }
+    });
 
 
 module.exports = router;
