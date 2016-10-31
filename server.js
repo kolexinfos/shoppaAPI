@@ -1,6 +1,6 @@
 // Include our packages in our main server file
 const express = require('express');
-app = express();
+const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
@@ -25,8 +25,7 @@ require('./config/passport')(passport);
 
 var users = require('./app/routes/users');
 var campaigns = require('./app/routes/campaigns');
-var company = require('./app/routes/company');
-
+var brands = require('./app/routes/brands');
 
 
 // Use body-parser to get POST requests for API use
@@ -45,17 +44,12 @@ app.get('/', function(req, res) {
 // Connect to database
 mongoose.connect(config.database);
 
-//require('./app/routes')(app);
 
-//app.use('/api', requireAuth,home)(app);
 app.use('/users', users);
 //app.use('/campaigns',requireAuth, campaigns);
 app.use('/campaigns', campaigns);
 
-app.use('/company', requireAuth, company);
+app.use('/brands', brands);
 
-// Start the server
-//app.listen(port);
-//console.log('Your server is running on port ' + port + '.');
 
 module.exports = app;

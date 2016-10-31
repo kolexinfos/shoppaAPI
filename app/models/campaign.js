@@ -49,6 +49,10 @@ const CampaignSchema = new mongoose.Schema({
         rank:{
             type:Array,
             default:[]
+        },
+        brand:{
+            type:String,
+            required:true
         }
     },
 {

@@ -27,7 +27,7 @@ router.post('/', function (req, res) {
     console.log(req.body);
 
     if(!req.body.name || !req.body.type || !req.body.description || !req.body.enabled || !req.body.expiring
-        || !req.body.image || !req.body.tags )
+        || !req.body.image || !req.body.tags || !req.body.brand )
     {
         res.status(400).json({ success: false, message: 'Please make sure you pass all the required parameter for this endpoint.' });
         console.log('Missing Parameter');
