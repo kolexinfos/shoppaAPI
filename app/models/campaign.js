@@ -45,6 +45,10 @@ const CampaignSchema = new mongoose.Schema({
         share:{
             type:Array,
             default: []
+        },
+        rank:{
+            type:Array,
+            default:[]
         }
     },
 {
