@@ -55,4 +55,35 @@ router.post('/', function (req, res) {
     }
 });
 
+router.post('/like', function(req, res){
+    console.log(req.body);
+
+    if(!req.body.email || !req.body.brandid)
+    {
+        res.status(400).json({ success: false, message: 'Please make sure you pass all the required parameter for this endpoint.' });
+        console.log('Missing Parameter');
+    }
+    else{
+    console.log( moment.utc().format('YYYY-MM-DD HH:mm:ss'));
+    
+    Brand.findOneAndUpdate({_id:req.body.brandid}, { $push: { likes : {"email" : req.body.email, "timestamp" : moment.utc().format('YYYY-MM-DD HH:mm:ss') } } }, function(err,result){
+        if(err)
+        {
+            console.log(err);
+            return res.status(400).json({ success: false, message: 'An error occurred on trying to update campaign ' + err});
+        }
+
+        res.status(201).json({ success: true,result:result, message: 'Successfully added users to the list of user likes for this campaign ' });
+    })
+    }
+});
+
+router.post('/share', function(req, res) {
+    
+});
+
+router.post('/follow', function(req, res) {
+    
+});
+
 module.exports = router;

@@ -29,6 +29,14 @@ const BrandSchema = new mongoose.Schema({
         likes:{
             type:Array,
             default: []
+        },
+        shares:{
+            type:Array,
+            default: []
+        },
+        follow:{
+            type:Array,
+            default:[]
         }
     },
 {
