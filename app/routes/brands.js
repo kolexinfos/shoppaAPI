@@ -24,8 +24,35 @@ router.get('/', function (req, res) {
 
 });
 
-router.post('/', function (req, res) { 
+router.post('/', function (req, res) {
     
+    if(!req.body.name || !req.body.category || !req.body.description || !req.body.enabled || !req.body.image || !req.body.tags)
+    {
+        res.status(400).json({ success: false, message: 'Please make sure you pass all the required parameter for this endpoint.' });
+        console.log('Missing Parameter');
+    }
+    else
+    {
+        const brand = new Brand({
+           name: req.body.name,
+           category: req.body.category,
+           description: req.body.description,
+           enabled: req.body.enabled,
+           image: req.body.image,
+           tags: req.body.tags
+        });
+        
+        brand.save(function(err){
+            if(err)
+            {
+                console.log(err);
+                return res.status(400).json({ success: false, message: 'An error occurred on trying to save campaign, please try again later ' + err});
+            }
+
+            res.status(201).json({ success: true, message: 'Successfully created Brand ' + req.body.name });
+        })
+     
+    }
 });
 
 module.exports = router;
