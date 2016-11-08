@@ -26,6 +26,7 @@ require('./config/passport')(passport);
 var users = require('./app/routes/users');
 var campaigns = require('./app/routes/campaigns');
 var brands = require('./app/routes/brands');
+var misc = require('./app/routes/misc');
 
 
 // Use body-parser to get POST requests for API use
@@ -50,6 +51,7 @@ app.use('/users', users);
 app.use('/campaigns', campaigns);
 
 app.use('/brands', brands);
+app.use('/misc', misc);
 
 
 module.exports = app;

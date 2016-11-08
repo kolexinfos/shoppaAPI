@@ -70,10 +70,10 @@ router.post('/like', function(req, res){
         if(err)
         {
             console.log(err);
-            return res.status(400).json({ success: false, message: 'An error occurred on trying to update campaign ' + err});
+            return res.status(400).json({ success: false, message: 'An error occurred on trying to update brand ' + err});
         }
 
-        res.status(201).json({ success: true,result:result, message: 'Successfully added users to the list of user likes for this campaign ' });
+        res.status(201).json({ success: true,result:result, message: 'Successfully added users to the list of user likes for this brand ' });
     })
     }
 });
