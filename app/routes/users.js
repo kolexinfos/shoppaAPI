@@ -16,6 +16,51 @@ router.get('/test', function(req, res, next) {
   res.json( hash );
 });
 
+/* POST Send Email. */
+router.post('/sendEmail', function(req, res, next) {
+   if(!req.body.title || !req.body.message || !req.body.email  ){
+    console.log(req.body);
+    res.status(400).json({ success: false, message: 'Please make sure you send title, message and email as parameters to this endpoints' });
+  }
+  else {
+    
+    var from = 'info@234radio.com';
+    var message = 'Find details of a message from the 234Radio App' + String.fromCharCode(13) + 'Title : ' + req.body.title + String.fromCharCode(13) + 'Message : ' + req.body.message + String.fromCharCode(13) + 'User Email : ' + req.body.email;
+    var to = 'info@234radio.com';
+    
+     var smtpTransport = nodemailer.createTransport("SMTP", {
+    service: "Gmail",
+    auth: {
+      XOAuth2: {
+        user: "kolexinfos@gmail.com",
+        clientId: "126468130105-ss5kpd1ji8sarpon5bh0m38fvpssup1d.apps.googleusercontent.com",
+        clientSecret: "-f1wpkIIcz2X5BPA0eAUGqfe",
+        refreshToken: "1/Xs5m3FTZQoPB23jgOG8MFbtFlF_Q3uw6uVXEPEj3yf0"
+      }
+    }
+  });
+
+  var mailOptions = {
+    from: from,
+    to: to,
+    subject: 'Message from 234Radio App',
+    text: message
+  }
+  
+  smtpTransport.sendMail(mailOptions, function(error, response){
+    if(error){
+      console.log(error);
+    }else{
+      console.log('Email Sent for ' + req.body.email);
+      res.status(201).json({success: true, message: 'The Email has been sent'});
+
+    }
+  });
+  }
+  
+  
+});
+
 router.post('/verifyEmail', function(req, res, next) {
   console.log(req.body);
   
