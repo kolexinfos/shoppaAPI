@@ -18,14 +18,19 @@ router.get('/test', function(req, res, next) {
 
 /* POST Send Email. */
 router.post('/sendEmail', function(req, res, next) {
-   if(!req.body.title || !req.body.message || !req.body.email  ){
+   if(!req.body.title || !req.body.message || !req.body.email || !req.body.type ){
     console.log(req.body);
-    res.status(400).json({ success: false, message: 'Please make sure you send title, message and email as parameters to this endpoints' });
+    res.status(400).json({ success: false, message: 'Please make sure you send title, type, message and email as parameters to this endpoints' });
   }
   else {
     
     var from = 'info@234radio.com';
-    var message = 'Find details of a message from the 234Radio App' + String.fromCharCode(13) + 'Title : ' + req.body.title + String.fromCharCode(13) + 'Message : ' + req.body.message + String.fromCharCode(13) + 'User Email : ' + req.body.email;
+    var message = 'Find details of a message from the 234Radio App'
+        + String.fromCharCode(13) + 'Type : ' + req.body.type
+        + String.fromCharCode(13) + 'Title : ' + req.body.title
+        + String.fromCharCode(13) + 'Message : '+  req.body.message
+        + String.fromCharCode(13) + 'User Email : ' + req.body.email
+        + String.fromCharCode(13) + 'User Phone : ' + req.body.phone;
     var to = 'info@234radio.com';
     
      var smtpTransport = nodemailer.createTransport("SMTP", {
