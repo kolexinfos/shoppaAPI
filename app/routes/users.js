@@ -10,7 +10,7 @@ var moment = require('moment');
 var smtpTransport = require('nodemailer-smtp-transport');
 var AWS = require('aws-sdk');
 
-AWS.config.update({ accessKeyId: 'AKIAJVYBOX3BRNJ2ZGVA', secretAccessKey: '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' });
+AWS.config.update({ accessKeyId: '', secretAccessKey: '' });
 
 
 /* GET users listing. */

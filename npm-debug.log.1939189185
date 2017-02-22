@@ -1,0 +1,1 @@
+AWS.config.update({ accessKeyId: 'AKIAJVYBOX3BRNJ2ZGVA', secretAccessKey: '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' });
