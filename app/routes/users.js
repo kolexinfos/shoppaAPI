@@ -8,9 +8,18 @@ const config = require('../../config/main');
 var nodemailer = require('nodemailer');
 var moment = require('moment');
 var smtpTransport = require('nodemailer-smtp-transport');
-var AWS = require('aws-sdk');
+var multer  = require('multer')
+var upload = multer({ dest: 'uploads/' })
+var S3FS = require("s3fs");
+var fs = require("fs");
+var s3fsImpl = S3FS('234radious',{
+  accessKeyId : 'AKIAJK6PNVHPCDZPJVEA',
+  secretAccessKey : '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'
+})
 
-AWS.config.update({ accessKeyId: '', secretAccessKey: '' });
+//AWS.config.update({ accessKeyId: 'AKIAJK6PNVHPCDZPJVEA', secretAccessKey: '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' });
+
+var awsLink = 'https://s3.amazonaws.com/234radious/';
 
 
 /* GET users listing. */
@@ -20,11 +29,30 @@ router.get('/test', function(req, res, next) {
   res.json( hash );
 });
 
+/* GET usegrs listing. */
+router.post('/upload', upload.single('file'), function(req, res, next) {
+  
+    var stream = fs.createReadStream(req.file.path);
+   
+    console.log('/uploads/' + req.file.originalname);
+    //console.log(req.file);
+    
+    s3fsImpl.writeFile(req.file.originalname, stream)
+    .then(function() {
+        console.log('It\'s saved!');
+      }, function(reason) {
+        throw reason;
+      });
+   
+    res.status(201).json({success: true, message: req.file});
+});
+
+
 /* POST Send Email. */
 router.post('/sendEmail', function(req, res, next) {
-   if(!req.body.title || !req.body.message || !req.body.email || !req.body.type ){
+   if(!req.body.title || !req.body.message || !req.body.email || !req.body.type || !req.body.filename ){
     console.log(req.body);
-    res.status(400).json({ success: false, message: 'Please make sure you send title, type, message and email as parameters to this endpoints' });
+    res.status(400).json({ success: false, message: 'Please make sure you send title, type, message, filename and email as parameters to this endpoints' });
   }
   else {
 
@@ -46,14 +74,21 @@ router.post('/sendEmail', function(req, res, next) {
         + String.fromCharCode(13) + 'Message : ' + req.body.message
         + String.fromCharCode(13) + 'User Email : ' + req.body.email
         + String.fromCharCode(13) + 'User Phone : ' + req.body.phone;
-    var to = 'ddjokay@gmail.com';
+    var to = 'kolexinfos@gmail.com';
 
     var mailOptions = {
       transport: transport,
       from: from,
       to: to,
       subject: 'Message from 234Radio App',
-      text: message
+      text: message,
+      attachments: [
+          {   // use URL as an attachment
+            filename: 'file',
+            path: awsLink + req.body.filename
+        }
+        ]
+    
     };
 
     transport.sendMail(mailOptions, function (error, response) {
@@ -61,6 +96,7 @@ router.post('/sendEmail', function(req, res, next) {
         console.log("Error Full : " + error);
       } else {
         console.log('Email Sent for ' + req.body.email);
+        console.log('Email Sent for ' + awsLink + req.body.filename);
         res.status(201).json({success: true, message: 'The Email has been sent'});
       }
     });

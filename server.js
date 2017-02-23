@@ -7,6 +7,9 @@ const morgan = require('morgan');
 const passport = require('passport');
 
 
+
+
+
 const jwt = require('jsonwebtoken');
 
 const config = require('./config/main');
@@ -30,8 +33,9 @@ var misc = require('./app/routes/misc');
 
 
 // Use body-parser to get POST requests for API use
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(bodyParser.json());
+//app.use(multipartyMiddleWare);
 
 
 // Log requests to console
