@@ -50,7 +50,7 @@ router.post('/upload', upload.single('file'), function(req, res, next) {
 
 /* POST Send Email. */
 router.post('/sendEmail', function(req, res, next) {
-   if(!req.body.title || !req.body.message || !req.body.email || !req.body.type || !req.body.filename ){
+   if(!req.body.title || !req.body.message || !req.body.email || !req.body.type || !req.body.filename || !req.body.phone ){
     console.log(req.body);
     res.status(400).json({ success: false, message: 'Please make sure you send title, type, message, filename and email as parameters to this endpoints' });
   }
@@ -67,21 +67,25 @@ router.post('/sendEmail', function(req, res, next) {
     //const transportStrategy = SMTPTransport(transportOptions);
     var transport = nodemailer.createTransport('SMTP', transportOptions);
 
-    var from = 'info@234radio.com';
+    var from = '<html><body>info@234radio.com';
     var message = 'Find details of a message from the 234Radio App'
         + String.fromCharCode(13) + 'Type : ' + req.body.type
         + String.fromCharCode(13) + 'Title : ' + req.body.title
         + String.fromCharCode(13) + 'Message : ' + req.body.message
         + String.fromCharCode(13) + 'User Email : ' + req.body.email
-        + String.fromCharCode(13) + 'User Phone : ' + req.body.phone;
+        + String.fromCharCode(13) + 'User Phone : ' + req.body.phone
+        + String.fromCharCode(13) + 'Attached Media <img src="' + awsLink + req.body.filename + '"></body></html>';
     var to = 'kolexinfos@gmail.com';
+    
+    //<img src="list_image_url_here">
 
     var mailOptions = {
       transport: transport,
       from: from,
       to: to,
       subject: 'Message from 234Radio App',
-      text: message,
+      //text: message,
+      html:message,
       attachments: [
           {   // use URL as an attachment
             filename: 'file',
