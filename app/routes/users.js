@@ -66,6 +66,8 @@ router.post('/sendEmail', function(req, res, next) {
 
     //const transportStrategy = SMTPTransport(transportOptions);
     var transport = nodemailer.createTransport('SMTP', transportOptions);
+    
+    console.log(awsLink + req.body.filename);
 
     var from = '<html><body>info@234radio.com';
     var message = 'Find details of a message from the 234Radio App'
