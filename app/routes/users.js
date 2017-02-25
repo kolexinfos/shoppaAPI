@@ -77,7 +77,7 @@ router.post('/sendEmail', function(req, res, next) {
         + String.fromCharCode(13) + '<p>User Email : ' + req.body.email + '</p>'
         + String.fromCharCode(13) + '<p>User Phone : ' + req.body.phone + '</p>'
         + String.fromCharCode(13) + '<p>Attached Media <img src="' + awsLink + req.body.filename + '"></p></body></html>';
-    var to = 'kolexinfos@gmail.com';
+    var to = 'ddjokay@gmail.com';
     
     //<img src="list_image_url_here">
 
