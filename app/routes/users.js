@@ -70,13 +70,13 @@ router.post('/sendEmail', function(req, res, next) {
     console.log(awsLink + req.body.filename);
 
     var from = '<html><body>info@234radio.com';
-    var message = 'Find details of a message from the 234Radio App'
-        + String.fromCharCode(13) + 'Type : ' + req.body.type
-        + String.fromCharCode(13) + 'Title : ' + req.body.title
-        + String.fromCharCode(13) + 'Message : ' + req.body.message
-        + String.fromCharCode(13) + 'User Email : ' + req.body.email
-        + String.fromCharCode(13) + 'User Phone : ' + req.body.phone
-        + String.fromCharCode(13) + 'Attached Media <img src="' + awsLink + req.body.filename + '"></body></html>';
+    var message = '<b>Find details of a message from the 234Radio App</b>'
+        + String.fromCharCode(13) + '<p>Type : ' + req.body.type + '</p>'
+        + String.fromCharCode(13) + '<p>Title : ' + req.body.title + '</p>'
+        + String.fromCharCode(13) + '<p>Message : ' + req.body.message + '</p>'
+        + String.fromCharCode(13) + '<p>User Email : ' + req.body.email + '</p>'
+        + String.fromCharCode(13) + '<p>User Phone : ' + req.body.phone + '</p>'
+        + String.fromCharCode(13) + '<p>Attached Media <img src="' + awsLink + req.body.filename + '"></p></body></html>';
     var to = 'kolexinfos@gmail.com';
     
     //<img src="list_image_url_here">
