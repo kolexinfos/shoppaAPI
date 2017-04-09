@@ -322,5 +322,26 @@ function ValidateUser(user){
 
 }
 
+// Authenticate the user and get a JSON Web Token to include in the header of future requests.
+router.post('/skill', function(req, res) {
+  console.log(req);
+});
+
+
+
 
 module.exports = router;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
