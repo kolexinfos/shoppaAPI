@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
+var Skill = require('../models/skill');
 var Verify = require('../models/verify');
 var hasher = require('wordpress-hash-node');
 const jwt = require('jsonwebtoken');
@@ -324,11 +325,30 @@ function ValidateUser(user){
 
 // Authenticate the user and get a JSON Web Token to include in the header of future requests.
 router.post('/skill', function(req, res) {
-  console.log(req.body);
-  
-  
-  res.status(200).json({ success: true,message:'Report Submitted Successfully.' });
-  
+
+  var questions = req.body;
+
+  for(var item of questions) {
+    
+    var skill = new Skill({
+      answer:         item.answer,
+      questionNumber: item.questionNumber,
+      userEmail:      item.userEmail,
+      dateCreated:    item.dateCreated,
+      questionStep:   item.questionStep
+    });
+    
+    console.log("Saving : " + item.questionNumber + " for " + item.userEmail);
+    skill.save(function(err){
+      if(err){
+        console.log(err);
+         return res.status(400).json({ success: false, message: err});        
+       }
+       
+    })
+    
+  }  
+  res.status(200).json({ success: true,message:'SkillMi Data was updated to the database.' });
 });
 
 
