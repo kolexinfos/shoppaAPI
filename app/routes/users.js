@@ -214,7 +214,8 @@ router.post('/register', function(req, res) {
       email: req.body.email,
       password: req.body.password,
       phone: req.body.phone,
-      username:req.body.username
+      username:req.body.username,
+      organization:req.body.organization
     });
 
     console.log('Saving user ' + req.body.email + ' ' + req.body.username);
@@ -226,7 +227,7 @@ router.post('/register', function(req, res) {
       }
 
       //Send email to user with code and save to DB
-      ValidateUser(newUser);
+      //ValidateUser(newUser);
 
       res.status(201).json({ success: true, message: 'Successfully created new user.' });
 
