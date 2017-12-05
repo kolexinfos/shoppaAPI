@@ -215,7 +215,9 @@ router.post('/register', function(req, res) {
       password: req.body.password,
       phone: req.body.phone,
       username:req.body.username,
-      organization:req.body.organization
+      organization:req.body.organization,
+      sponsor:req.body.sponsor,
+      referral:req.body.referral
     });
 
     console.log('Saving user ' + req.body.email + ' ' + req.body.username);

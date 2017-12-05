@@ -25,6 +25,12 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required:true
   },
+  sponsor:{
+    type: String,
+  },
+  referral:{
+    type: String,
+  },
   role: {
     type: String,
     enum: ['Client', 'Manager', 'Admin'],
